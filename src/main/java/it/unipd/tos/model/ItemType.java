@@ -1,16 +1,10 @@
 ////////////////////////////////////////////////////////////////////
 // [MICHELE] [BALDISSERI] [1193109]
 ////////////////////////////////////////////////////////////////////
-package it.unipd.tos;
+package it.unipd.tos.model;
 
-/**
- * Hello world!
- *
- */
-public class App 
-{
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
-    }
-}
+public enum ItemType {
+    Gelato, 
+    Budino, 
+    Bevanda 
+}    
