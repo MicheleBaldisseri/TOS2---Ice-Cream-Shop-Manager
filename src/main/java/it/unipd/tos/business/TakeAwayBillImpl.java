@@ -5,10 +5,14 @@
 package it.unipd.tos.business;
 
 import it.unipd.tos.business.exception.TakeAwayBillException;
-import it.unipd.tos.model.ItemType;
 import it.unipd.tos.model.MenuItem;
 import it.unipd.tos.model.User;
+import it.unipd.tos.model.Order;
+import it.unipd.tos.model.ItemType;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalTime;
 
 public class TakeAwayBillImpl implements TakeAwayBill {
     
@@ -58,11 +62,44 @@ public class TakeAwayBillImpl implements TakeAwayBill {
             total -= total*0.1;
         }
         
-        //se spesa inferiore 10€ commissione di 50cent
         if(total<10) {
             total += 0.5;
         }
         
         return total;
+    }
+    
+    public List<Order> getFreeOrders(List<Order> ordini) throws TakeAwayBillException {
+        
+        List<Order> ordiniGratis = new ArrayList<Order>();
+        
+        for (int i = 0; i < ordini.size(); i++) {
+            
+            if(ordini.get(i).getUser().getAge()<18 && //se minorenne
+             ordini.get(i).getOrarioOrdine().isAfter(LocalTime.of(18,00,00,00)) && //dopo le 18
+             ordini.get(i).getOrarioOrdine().isAfter(LocalTime.of(18,00,00,00))){ //prima delle 19
+                
+                ordiniGratis.add(ordini.get(i)); //ordine in regalo
+            }
+        }
+
+        if(ordiniGratis.size() > 9){
+            
+            for(int i=0; i<10; i++) {
+              //numero a caso tra 1 e numero ordini
+              int randomIndex = (int)(ordiniGratis.size() * Math.random());
+              if(ordiniGratis.get(randomIndex).getPrice() == 0) {
+                  i--;
+              }
+              else {
+              ordiniGratis.get(randomIndex).setPrice(0);
+              }
+            }
+        }
+        else {
+            throw new TakeAwayBillException("Ordini insufficienti per regali");
+        }
+        
+        return ordiniGratis;
     }
 }

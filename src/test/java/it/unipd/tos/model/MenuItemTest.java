@@ -29,7 +29,7 @@ public class MenuItemTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void costruttoreNomeElementoNulloTest() {
-        new MenuItem(ItemType.Budino, null, 4D);
+        new MenuItem(ItemType.Budino, null, 3.00);
     }
 
     @Test(expected = IllegalArgumentException.class)
