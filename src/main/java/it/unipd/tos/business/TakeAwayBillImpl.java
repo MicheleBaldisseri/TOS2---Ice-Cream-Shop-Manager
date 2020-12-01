@@ -16,7 +16,8 @@ public class TakeAwayBillImpl implements TakeAwayBill {
     public double getOrderPrice(List<MenuItem> itemsOrdered, User user) throws TakeAwayBillException {
         double total = 0;
         double min = 1000;
-        int gelati = 0, budini = 0;
+        int gelati = 0;
+        boolean notBevanda = false;
         
         if(itemsOrdered == null) {
             throw new TakeAwayBillException("Lista nulla");
@@ -26,15 +27,21 @@ public class TakeAwayBillImpl implements TakeAwayBill {
             throw new TakeAwayBillException("Lista ordini vuota");
         }
         
+        //se l'ordine ha +30 elementi allora errore
+        if(itemsOrdered.size() > 30) {
+            throw new TakeAwayBillException("Limite ordine superato");
+        }
         
         for (MenuItem item : itemsOrdered) {
             double current = item.getPrice();
-            if(item.getType().equals(ItemType.Gelato)) {
-                gelati++;
+            
+            if(!item.getType().equals(ItemType.Bevanda)) {
+                notBevanda = true;
+                if(item.getType().equals(ItemType.Gelato)) {
+                    gelati++;
+                }
             }
-            else if(item.getType().equals(ItemType.Budino)) {
-                gelati++;
-            }
+
             if(current<min) {
                 min=current;
             }
@@ -46,11 +53,9 @@ public class TakeAwayBillImpl implements TakeAwayBill {
             total -= 0.5*min;
         }
         
-        //sconto del 10% se totale>50€
-        if(total>50) {
-            if(budini>0 || gelati >0) {
-                total -= total*0.1;
-            }
+        //sconto del 10% se totale>50€ di budini e gelati
+        if(total>50 && notBevanda) {
+            total -= total*0.1;
         }
         
         return total;

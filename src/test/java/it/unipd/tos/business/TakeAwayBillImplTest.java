@@ -72,4 +72,14 @@ public class TakeAwayBillImplTest {
        
         assertEquals(49.5, testBill.getOrderPrice(itemsOrdered,user), 0.0);
     }
+    
+    @Test(expected=TakeAwayBillException.class)
+    public void oltreTrentaElementiPerOrdineTest() {
+        
+        for(int i=0; i<35; i++) {
+            itemsOrdered.add(new MenuItem( ItemType.Gelato, "Coppa Nafta",3.00));
+        }
+        
+        testBill.getOrderPrice(itemsOrdered, user);
+    }
 }
