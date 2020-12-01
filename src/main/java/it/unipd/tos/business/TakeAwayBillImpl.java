@@ -58,6 +58,11 @@ public class TakeAwayBillImpl implements TakeAwayBill {
             total -= total*0.1;
         }
         
+        //se spesa inferiore 10€ commissione di 50cent
+        if(total<10) {
+            total += 0.5;
+        }
+        
         return total;
     }
 }

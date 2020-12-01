@@ -35,10 +35,10 @@ public class TakeAwayBillImplTest {
     public void calcoloDelTotaleTest(){
         
         itemsOrdered.add(new MenuItem( ItemType.Budino, "Budino Pinguino",3.00));
-        itemsOrdered.add(new MenuItem( ItemType.Bevanda, "The", 2.00));
-        itemsOrdered.add(new MenuItem( ItemType.Gelato, "Coppa Nafta", 4.00));
+        itemsOrdered.add(new MenuItem( ItemType.Bevanda, "The", 2.50));
+        itemsOrdered.add(new MenuItem( ItemType.Gelato, "Coppa Nafta", 5.00));
         
-        assertEquals(9, testBill.getOrderPrice(itemsOrdered,user), 0.0);
+        assertEquals(10.5, testBill.getOrderPrice(itemsOrdered,user), 0.0);
     }
     
     @Test(expected=TakeAwayBillException.class)
@@ -81,5 +81,14 @@ public class TakeAwayBillImplTest {
         }
         
         testBill.getOrderPrice(itemsOrdered, user);
+    }
+    
+    @Test
+    public void totaleConCommissioneSeMenoDi10euroTest() {
+        
+        itemsOrdered.add(new MenuItem( ItemType.Budino, "Budino Pinguino",3.00));
+        itemsOrdered.add(new MenuItem( ItemType.Bevanda, "The",2.00));
+       
+        assertEquals(5.5, testBill.getOrderPrice(itemsOrdered,user), 0.0);
     }
 }
